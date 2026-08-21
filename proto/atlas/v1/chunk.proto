@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package atlas.v1;
+
+option go_package = "github.com/sohaibq914/atlas/gen/atlas/v1;atlasv1";
+
+// ChunkService is the storage node's data-plane API. It knows nothing
+// about object keys, manifests, or replication factor: it stores numbered
+// blobs.
+service ChunkService {
+  // WriteChunk streams a chunk to this node. The first message must carry
+  // the header; every subsequent message carries data.
+  rpc WriteChunk(stream WriteChunkRequest) returns (WriteChunkResponse);
+
+  // ReadChunk streams a chunk back, verifying its checksum first.
+  rpc ReadChunk(ReadChunkRequest) returns (stream ReadChunkResponse);
+
+  // DeleteChunk removes a chunk. Deleting an absent chunk succeeds.
+  rpc DeleteChunk(DeleteChunkRequest) returns (DeleteChunkResponse);
+}
+
+message WriteChunkHeader {
+  string chunk_id = 1;
+
+  // Addresses of further replicas to forward these bytes to, in order.
+  // Empty in M1; chained replication arrives in M2.
+  repeated string forward_to = 2;
+}
+
+message WriteChunkRequest {
+  oneof payload {
+    WriteChunkHeader header = 1;
+    bytes data = 2;
+  }
+}
+
+message WriteChunkResponse {
+  uint64 size = 1;
+  uint32 crc32c = 2;
+
+  // Number of replicas that durably stored these bytes, including this
+  // node. Always 1 in M1.
+  uint32 replicas = 3;
+}
+
+message ReadChunkRequest {
+  string chunk_id = 1;
+}
+
+message ReadChunkResponse {
+  bytes data = 1;
+}
+
+message DeleteChunkRequest {
+  string chunk_id = 1;
+}
+
+message DeleteChunkResponse {}

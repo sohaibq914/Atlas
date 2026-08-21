@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package atlas.v1;
+
+option go_package = "github.com/sohaibq914/atlas/gen/atlas/v1;atlasv1";
+
+// ChunkRef identifies one chunk and records what it should contain.
+message ChunkRef {
+  string chunk_id = 1;
+  uint64 size = 2;
+  uint32 crc32c = 3;
+}
