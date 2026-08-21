@@ -1,0 +1,5 @@
+bin/
+data/
+.atlas/
+*.test
+coverage.out
