@@ -20,14 +20,14 @@ type ID [IDSize]byte
 // NewID returns a fresh random chunk identifier.
 func NewID() (ID, error) {
 	var id ID
-	if _, err := rand.Read(id[:]); err != nil {
+	if _, err := rand.Read(id[:]); err != nil { //! rand.Reads writes random bytes to the slice id[:]
 		return ID{}, fmt.Errorf("generate chunk id: %w", err)
 	}
 	return id, nil
 }
 
 // String renders the identifier as 32 lowercase hex characters.
-func (id ID) String() string {
+func (id ID) String() string { //! converts the 16 bytes into a 32 character hex string... why? because it's easier to represent file name using hex string than bytes because it's safer
 	return hex.EncodeToString(id[:])
 }
 
@@ -38,6 +38,7 @@ func (id ID) Shard() string {
 }
 
 // ParseID decodes a chunk identifier from its hex representation.
+//! converts from hex to bytes
 func ParseID(s string) (ID, error) {
 	b, err := hex.DecodeString(s)
 	if err != nil {

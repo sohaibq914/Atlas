@@ -1,6 +1,14 @@
 // Package node implements the Atlas storage node: a local chunk store and
 // the gRPC service that fronts it.
-package node
+//! Create store
+//! Write chunk safely
+//! Read and verify chunk
+//! Delete chunk
+//! Check whether chunk exists
+//! List all chunks
+
+
+package node //! This file belongs to the node package, which implements the storage node.
 
 import (
 	"encoding/json"
@@ -29,10 +37,13 @@ var (
 // then renamed into place, so a .dat file is never visible in a partial
 // state, and never exists without its .meta.
 type Store struct {
-	root string
+	root string //! Because root starts with a lowercase letter, only code inside the node package can access it directly.
 }
 
 // chunkMeta is the JSON payload of a .meta file.
+//! Each chunk has a small metadata file containing:
+//! - Its expected size
+//!  - Its expected CRC32C checksum
 type chunkMeta struct {
 	Size   int64  `json:"size"`
 	CRC32C uint32 `json:"crc32c"`
@@ -47,8 +58,8 @@ func NewStore(root string) (*Store, error) {
 }
 
 // Root returns the store's root directory.
+//! store knows where every chunk and metadata file belongs
 func (s *Store) Root() string { return s.root }
-
 func (s *Store) dir(id chunk.ID) string  { return filepath.Join(s.root, id.Shard()) }
 func (s *Store) path(id chunk.ID) string { return filepath.Join(s.dir(id), id.String()+".dat") }
 func (s *Store) meta(id chunk.ID) string { return filepath.Join(s.dir(id), id.String()+".meta") }
