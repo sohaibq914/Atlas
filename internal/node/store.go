@@ -6,7 +6,6 @@
 // ! Delete chunk
 // ! Check whether chunk exists
 // ! List all chunks
-
 package node // ! This file belongs to the node package, which implements the storage node.
 
 import (
@@ -200,7 +199,7 @@ func (s *Store) Has(id chunk.ID) bool {
 // List returns the identifiers of every chunk in the store.
 func (s *Store) List() ([]chunk.ID, error) {
 	var ids []chunk.ID
-	err := filepath.WalkDir(s.root, func(path string, d os.DirEntry, err error) error {
+	err := filepath.WalkDir(s.root, func(_ string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}

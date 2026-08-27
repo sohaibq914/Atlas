@@ -16,6 +16,7 @@ func CRC(b []byte) uint32 {
 	return crc32.Checksum(b, castagnoli)
 }
 
+// NewHasher returns a streaming CRC32C checksum calculator.
 // ! this only returns the checksum calculator
 // ! .Write on the return function will calculate the checksum of the bytes written to it
 // ! this is useful for calculating the checksum of a stream of bytes, rather than a single byte slice
