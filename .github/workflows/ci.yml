@@ -16,8 +16,8 @@ jobs:
         run: gofmt -l . | tee /dev/stderr | (! read)
       - name: Vet
         run: go vet ./...
-      - uses: golangci/golangci-lint-action@v6
+      - uses: golangci/golangci-lint-action@v9
         with:
-          version: latest
+          version: v2.13.2
       - name: Test
         run: go test ./... -race -count=1
