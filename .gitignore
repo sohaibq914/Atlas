@@ -3,3 +3,14 @@ data/
 .atlas/
 *.test
 coverage.out
+
+# Local OS and editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local implementation plans
+docs/superpowers/plans/
+docs/superpowers/specs/

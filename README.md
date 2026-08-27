@@ -10,8 +10,6 @@ replica count is restored automatically.
 **Status: M1.** A single storage node, chunked writes and verified reads.
 Replication, the metadata plane, and Raft arrive in M2 and M3.
 
-Design: [`docs/superpowers/specs/2026-08-21-atlas-design.md`](docs/superpowers/specs/2026-08-21-atlas-design.md)
-
 ## Build
 
 Requires Go 1.27. Protocol buffer regeneration additionally requires
